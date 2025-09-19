@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Login Demo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh; margin: 0;
+      background: linear-gradient(135deg,#6366f1,#3b82f6);
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.15);
+      width: 320px;
+      text-align: center;
+    }
+    h2 { margin-bottom: 20px; color: #1e293b; }
+    input {
+      width: 100%; padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px; border: 1px solid #ddd;
+      font-size: 15px;
+    }
+    button {
+      width: 100%; padding: 12px;
+      margin-top: 10px;
+      border: none; border-radius: 10px;
+      background: #6366f1; color: white;
+      font-weight: bold; font-size: 15px;
+      cursor: pointer; transition: 0.3s;
+    }
+    button:hover { background: #4f46e5; }
+    .msg { margin-top: 15px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input id="username" placeholder="Username" required>
+      <input id="password" type="password" placeholder="Password" required>
+      <button type="submit">Masuk</button>
+    </form>
+    <p class="msg" id="msg"></p>
+  </div>
+
+  <script>
+    // Hardcoded user/pass
+    const validUser = "admin";       // ganti sesuai keinginan
+    const validPass = "12345";       // ganti sesuai keinginan
+
+    const form = document.getElementById('loginForm');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value;
+
+      if(u === validUser && p === validPass){
+        msg.style.color = "green";
+        msg.textContent = "✅ Login sukses! Selamat datang " + u;
+        setTimeout(()=> {
+          // redirect ke dashboard palsu
+          document.body.innerHTML = `<div class='card'><h2>Halo ${u} 👋</h2><p>Ini halaman dashboard sederhana.</p></div>`;
+        }, 1000);
+      } else {
+        msg.style.color = "red";
+        msg.textContent = "❌ Username atau password salah!";
+      }
+    });
+  </script>
+</body>
+</html>
