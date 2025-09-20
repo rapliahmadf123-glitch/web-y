@@ -1,78 +1,81 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Login Demo</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      display: flex; align-items: center; justify-content: center;
-      height: 100vh; margin: 0;
-      background: linear-gradient(135deg,#6366f1,#3b82f6);
-    }
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.15);
-      width: 320px;
-      text-align: center;
-    }
-    h2 { margin-bottom: 20px; color: #1e293b; }
-    input {
-      width: 100%; padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px; border: 1px solid #ddd;
-      font-size: 15px;
-    }
-    button {
-      width: 100%; padding: 12px;
-      margin-top: 10px;
-      border: none; border-radius: 10px;
-      background: #6366f1; color: white;
-      font-weight: bold; font-size: 15px;
-      cursor: pointer; transition: 0.3s;
-    }
-    button:hover { background: #4f46e5; }
-    .msg { margin-top: 15px; font-size: 14px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attack Menu UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   </style>
 </head>
 <body>
-  <div class="card">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input id="username" placeholder="Username" required>
-      <input id="password" type="password" placeholder="Password" required>
-      <button type="submit">Masuk</button>
-    </form>
-    <p class="msg" id="msg"></p>
+  <div class="container">
+    <!-- LEFT -->
+    <section class="panel">
+      <div class="logo">Rapzmodz Official</div>
+      <label for="target">Nomor Target</label>
+      <input type="text" id="target" placeholder="+6281234567890">
+
+      <label for="mode">Mode</label>
+      <select id="mode">
+        <option>Crash Infinity</option>
+        <option>Blank Freeze</option>
+        <option>Delay Hard</option>
+      </select>
+
+      <button class="btn" id="runBtn">▶ Kirim</button>
+    </section>
+
+    <!-- RIGHT -->
+    <aside class="right">
+      <div class="card">
+        <h3>Status Pengiriman</h3>
+        <div class="progress-wrap">
+          <div class="progress" id="progress"></div>
+        </div>
+        <div class="log" id="log"><p>Ready.</p></div>
+      </div>
+    </aside>
   </div>
 
   <script>
-    // Hardcoded user/pass
-    const validUser = "admin";       // ganti sesuai keinginan
-    const validPass = "12345";       // ganti sesuai keinginan
+    const runBtn = document.getElementById('runBtn');
+    const progress = document.getElementById('progress');
+    const logEl = document.getElementById('log');
+    const target = document.getElementById('target');
+    const mode = document.getElementById('mode');
 
-    const form = document.getElementById('loginForm');
-    const msg = document.getElementById('msg');
+    let running = false;
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value;
+    function appendLog(text) {
+      const p = document.createElement('p');
+      p.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
+      logEl.prepend(p);
+    }
 
-      if(u === validUser && p === validPass){
-        msg.style.color = "green";
-        msg.textContent = "✅ Login sukses! Selamat datang " + u;
-        setTimeout(()=> {
-          // redirect ke dashboard palsu
-          document.body.innerHTML = `<div class='card'><h2>Halo ${u} 👋</h2><p>Ini halaman dashboard sederhana.</p></div>`;
-        }, 1000);
-      } else {
-        msg.style.color = "red";
-        msg.textContent = "❌ Username atau password salah!";
-      }
+    runBtn.addEventListener('click', () => {
+      if (running) return;
+      running = true;
+      progress.style.width = "0%";
+      appendLog("Pengiriman dimulai (UI visual).");
+      appendLog("Mode: " + mode.value);
+      appendLog("Target: " + (target.value || "(kosong)"));
+
+      let prog = 0;
+      const steps = ["Inisialisasi", "Menyiapkan data", "Mengirim...", "Verifikasi", "Selesai"];
+      let i = 0;
+
+      const interval = setInterval(() => {
+        prog += 20;
+        progress.style.width = prog + "%";
+        appendLog(steps[i] || "Proses...");
+        i++;
+
+        if (prog >= 100) {
+          clearInterval(interval);
+          appendLog("Pengiriman selesai (UI saja).");
+          running = false;
+        }
+      }, 700);
     });
   </script>
 </body>
